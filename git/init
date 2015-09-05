@@ -1,0 +1,3 @@
+#!/bin/sh
+# useless sample of the executable form
+exec git init "$@"
