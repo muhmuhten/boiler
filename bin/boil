@@ -15,7 +15,7 @@ for try in "$BOILER_BASE/$1"*; do
 done
 shift
 
-if [ -x "$try" ]; then
+if [ -x "$try" -a -f "$try" ]; then
   exec "$try" "$@"
 elif [ $# -gt 1 ]; then
   for file; do
