@@ -1,0 +1,26 @@
+#!/bin/sh
+if [ -z "$BOILER_BASE" ]; then
+  BOILER_BASE=$0
+  [ "${BOILER_BASE:0:1}" != "/" ] && BOILER_BASE=$PWD/$BOILER_BASE
+  BOILER_BASE=${BOILER_BASE%/*}
+  BOILER_BASE=${BOILER_BASE%/bin}
+fi
+
+[ $# -lt 1 ] && exec cat >&2 <<EOF
+Usage: $0 relpath options...
+EOF
+
+for try in "$BOILER_BASE/$1"*; do
+  [ -e "$try" ] && break
+done
+shift
+
+if [ -x "$try" ]; then
+  exec "$try" "$@"
+elif [ $# -gt 1 ]; then
+  for file; do
+    cp -a "$try" "$file"
+  done
+else
+  exec cp -a "$try" "$@"
+fi
